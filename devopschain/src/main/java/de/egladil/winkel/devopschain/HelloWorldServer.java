@@ -5,8 +5,18 @@ package de.egladil.winkel.devopschain;
 */
 
 public class HelloWorldServer {
+	
 	public static void main(String[] args) {
-		Server myserver = new Server();
-        myserver.connectToServer();
+		
+		Thread thread = new Thread("ServerThread") {
+			public void run() {
+				Server myserver = new Server();
+		        myserver.connectToServer();
+			}
+		};
+		
+		thread.start();
+		System.out.println(thread.getName() + " started");
+		
     }
 }
