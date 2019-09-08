@@ -39,6 +39,7 @@ public class ServerTest extends Server {
 		if (thread.isAlive()) thread.stop();
 	}
 
+	//is a hack to connect to a local terminal server. Means: TCP must run locally
 	@Test
 	public void testConnectToServer() throws Exception {
 		// try to connect to the server on localhost and port 9991
