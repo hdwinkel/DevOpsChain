@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    tools {
+        maven 'apache-maven-3.6.2'
+    }
+    stages {
+        stage("Checkout") {
+            steps {
+                //git branch: 'develop', url: 'https://github.com/hdwinkel/DevOpsChain.git'
+                checkout([$class: 'GitSCM',
+                branches: [[name: 'origin/develop']],
+                extensions: [[$class: 'WipeWorkspace']],
+                userRemoteConfigs: [[url: 'https://github.com/hdwinkel/DevOpsChain.git']]
+                ])
+            }
+        }
+        stage("Compile") {
+            steps {
+                dir("devopschain") {
+                    sh "pwd"
+                    sh "mvn compile"
+                }
+                //sh "cd DevOpsChain/devopschain"
+            }
+        }
+        stage("Unit test") {
+            steps {
+                dir("devopschain") {
+                    sh "pwd"
+                    sh "mvn test"
+                }
+            }
+        }
+    }
+}
+
