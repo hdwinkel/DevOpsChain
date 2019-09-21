@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        USERPASSWORDIOT = credentials('userpasswordiot')
+    }
     tools {
         maven 'apache-maven-3.6.2'
     }
@@ -42,7 +45,9 @@ pipeline {
         }
         failure {
             echo 'This will run only if failed'
-            sh "curl http://192.168.10.53/ay?o=1"
+            //sh "curl http://192.168.10.53/ay?o=1"
+            echo "curl http://192.168.10.73/cm?${USERPASSWORDIOT}&cmnd=gpio"
+            sh "curl http://192.168.10.73/cm?${USERPASSWORDIOT}&cmnd=gpio"
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
