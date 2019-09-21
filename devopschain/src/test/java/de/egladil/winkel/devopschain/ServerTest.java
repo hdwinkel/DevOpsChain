@@ -69,7 +69,7 @@ public class ServerTest extends Server {
 
         dout.close();  //close output stream      
 
-        assertEquals("Initial server response","Hello World! Enter Peace to exit1.",ret);
+        assertEquals("Initial server response","Hello World! Enter Peace to exit.",ret);
 		
 		
 	}
