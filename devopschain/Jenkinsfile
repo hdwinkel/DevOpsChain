@@ -46,8 +46,8 @@ pipeline {
         failure {
             echo 'This will run only if failed'
             //sh "curl http://192.168.10.53/ay?o=1"
-            echo """curl http://192.168.10.73/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20on"""
-            sh """curl http://192.168.10.73/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20on"""
+            echo "curl 'http://192.168.10.73/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20on'"
+            sh "curl 'http://192.168.10.73/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20on'"
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
