@@ -42,6 +42,8 @@ pipeline {
         }
         success {
             echo 'This will run only if successful'
+            echo "curl 'http://192.168.10.73/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20off'"
+            sh "curl 'http://192.168.10.73/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20off'"
         }
         failure {
             echo 'This will run only if failed'
