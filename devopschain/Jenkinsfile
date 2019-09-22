@@ -48,7 +48,6 @@ pipeline {
             //sh "curl http://192.168.10.53/ay?o=1"
             echo 'curl http://192.168.10.73/cm?user=${env.USERPASSWORDIOT_USR}&password=${env.USERPASSWORDIOT_PSW}&cmnd=Power on'
             //sh 'curl http://192.168.10.73/cm?${USERPASSWORDIOT}&cmnd=gpio'
-            }
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
