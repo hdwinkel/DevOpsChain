@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    environment {
+        USERPASSWORDIOT = credentials("userpasswordiot")
+    }
+    tools {
+        maven 'apache-maven-3.6.2'
+    }
+    stages {
+        stage("Checkout") {
+            steps {
+                //git branch: 'develop', url: 'https://github.com/hdwinkel/DevOpsChain.git'
+                checkout([$class: 'GitSCM',
+                branches: [[name: 'origin/develop']],
+                extensions: [[$class: 'WipeWorkspace']],
+                userRemoteConfigs: [[url: 'https://github.com/hdwinkel/DevOpsChain.git']]
+                ])
+            }
+        }
+        stage("Compile") {
+            steps {
+                dir("devopschain") {
+                    sh "pwd"
+                    sh "mvn compile"
+                }
+                //sh "cd DevOpsChain/devopschain"
+            }
+        }
+        stage("Unit test") {
+            steps {
+                dir("devopschain") {
+                    sh "pwd"
+                    sh "mvn test"
+                }
+            }
+        }
+        
+    }
+    post {
+        always {
+            echo 'This will always run'
+        }
+        success {
+            echo 'This will run only if successful'
+            echo "curl 'http://192.168.10.80/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20off'"
+            sh "curl 'http://192.168.10.80/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20off'"
+        }
+        failure {
+            echo 'This will run only if failed'
+            //sh "curl http://192.168.10.53/ay?o=1"
+            echo "curl 'http://192.168.10.80/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20on'"
+            sh "curl 'http://192.168.10.80/cm?user=$USERPASSWORDIOT_USR&password=$USERPASSWORDIOT_PSW&cmnd=Power%20on'"
+        }
+        unstable {
+            echo 'This will run only if the run was marked as unstable'
+        }
+        changed {
+            echo 'This will run only if the state of the Pipeline has changed'
+            echo 'For example, if the Pipeline was previously failing but is now successful'
+        }
+    }
+}
